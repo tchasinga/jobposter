@@ -2,6 +2,10 @@
 import React from 'react';
 import Image from 'next/image';
 import ImgFive from "../Image/Img05.webp";
+import ImgOne from "../Image/ImgOne.jpeg";
+import ImgTwo from "../Image/ImgTwo.jpeg";
+import ImgThree from "../Image/ImgThree.jpeg";
+import ImageFour from "../Image/ImageFour.jpeg";
 export default function AboutSection() {
   return (
     <section className="max-w-screen-2xl mx-auto w-full py-20 px-4">
