@@ -34,11 +34,14 @@ export default function Jobs() {
          </div>
 
          {/* Jo listing is added now */}
-            <div className='newproductgrid py-5 relative'>
+            <div className='newproductgrid py-5 '>
                 {getjobs.map((job) => (
-                    <div className='bg-gray-900 p-4 rounded-xl flex flex-col items-center' key={job.id}>
+                    <div className='bg-gray-900 p-4 rounded-xl relative flex flex-col items-center' key={job.id}>
                         <div className='newproductcardtop'>
                             <Image src={job.cardImgIcon} alt="" />
+                        </div>
+                        <div className='bg-[#309EC4] w-[70%] p-1 font-medium rounded-r-xl absolute  left-0 top-[60%]  '>
+                            <h1>{job.salary}</h1>
                         </div>
                         <div className='flex items-center justify-center font-bold text-white'>
                             <h1>{job.title}</h1>
