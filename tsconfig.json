@@ -28,7 +28,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "app/components/ui/sticky-scroll-reveal.jsx"  ],
   "exclude": [
     "node_modules"
   ]
