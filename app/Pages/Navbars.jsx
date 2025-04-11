@@ -1,7 +1,10 @@
 import React from 'react'
+import Dropdown from './Dropdown'
 
 export default function Navbars() {
   return (
-    <div>Navbars</div>
+    <div>
+        <Dropdown />
+    </div>
   )
 }
