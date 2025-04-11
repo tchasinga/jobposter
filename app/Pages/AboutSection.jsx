@@ -1,12 +1,62 @@
 "use client"
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { gsap } from 'gsap';
 import ImgFive from "../Image/Img05.webp";
 import ImgOne from "../Image/ImgOne.jpeg";
 import ImgTwo from "../Image/ImgTwo.jpeg";
 import ImgThree from "../Image/ImgThree.jpeg";
 import ImageFour from "../Image/ImageFour.jpeg";
+
 export default function AboutSection() {
+  const imageContainerRef = useRef(null);
+  const images = [ImgFive, ImgOne, ImgTwo, ImgThree, ImageFour];
+  const currentImageIndex = useRef(0);
+  const intervalRef = useRef(null);
+
+  useEffect(() => {
+    // Initialize GSAP animation
+    const startImageTransition = () => {
+      intervalRef.current = setInterval(() => {
+        // Fade out current image
+        gsap.to(imageContainerRef.current, {
+          opacity: 0,
+          duration: 0.8,
+          ease: "power2.inOut",
+          onComplete: () => {
+            // Update image index (cycle through images)
+            currentImageIndex.current = 
+              (currentImageIndex.current + 1) % images.length;
+            
+            // Force re-render by updating state (we use a dummy state)
+            forceUpdate();
+            
+            // Fade in new image
+            gsap.to(imageContainerRef.current, {
+              opacity: 1,
+              duration: 0.8,
+              ease: "power2.inOut"
+            });
+          }
+        });
+      }, 5000); // Change every 5 seconds
+    };
+
+    // Start the animation
+    startImageTransition();
+
+    // Clean up on unmount
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+      gsap.killTweensOf(imageContainerRef.current);
+    };
+  }, []);
+
+  // Dummy state to force re-render
+  const [, forceUpdate] = React.useReducer(x => x + 1, 0);
+
   return (
     <section className="max-w-screen-2xl mx-auto w-full py-20 px-4">
       {/* Section Header */}
@@ -18,18 +68,21 @@ export default function AboutSection() {
       </div>
 
       <div className="flex flex-col lg:flex-row gap-12 items-center">
-        {/* Image Section */}
+        {/* Image Section with GSAP animation */}
         <div className="lg:w-1/2 relative h-96 rounded-xl overflow-hidden">
-          <Image
-            src={ImgFive}
-            alt="Our team working"
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 50vw"
-          />
+          <div ref={imageContainerRef} className="relative h-full w-full">
+            <Image
+              src={images[currentImageIndex.current]}
+              alt="Our team working"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority
+            />
+          </div>
         </div>
 
-        {/* Content Section */}
+        {/* Rest of your content remains the same */}
         <div className="lg:w-1/2 space-y-6">
           <h2 className="text-3xl font-bold text-white">
             Bridging the Gap in Tech Employment Across Africa
