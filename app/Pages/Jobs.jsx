@@ -1,4 +1,6 @@
 import React from 'react'
+import getjobs from '../../constant/joblisting'
+import Image from 'next/image'
 
 export default function Jobs() {
   return (
@@ -32,6 +34,19 @@ export default function Jobs() {
          </div>
 
          {/* Jo listing is added now */}
+            <div className='newproductgrid py-5'>
+                {getjobs.map((job) => (
+                    <div className='bg-gray-900 p-4' key={job.id}>
+                        <div className='newproductcardtop'>
+                            <Image src={job.cardImgIcon} alt="" />
+                        </div>
+                        <div className='newproductcardbottom'>
+                            <h1>{job.title}</h1>
+                            <p>{job.salary}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
     </div>
   )
 }
