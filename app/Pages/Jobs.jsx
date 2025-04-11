@@ -27,7 +27,7 @@ export default function Jobs() {
   };
 
   return (
-    <div className='max-w-screen-2xl mx-auto w-full py-20'>
+    <div className='max-w-screen-xl mx-auto w-full py-20'>
 
     <div className="pb-10">
             <div className='leading-0'>
