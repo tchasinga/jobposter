@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Keeper from "./Pages/Keeper";
 import Jobs from "./Pages/Jobs";
-import { StickyScrollRevealDemo } from "./Pages/StickyScrollRevealDemo";
 
 export default function Home() {
   return (
@@ -11,7 +10,6 @@ export default function Home() {
       {/* <Jobs /> */}
       <Jobs />
       {/* <About /> */}
-      <StickyScrollRevealDemo />
       {/* <Companies /> */}
     </div>
   );
