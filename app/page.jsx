@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Keeper from "./Pages/Keeper";
+import Keeper from "./Pages/Keeper.jsx";
 
 export default function Home() {
   return (

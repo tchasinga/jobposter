@@ -11,9 +11,9 @@ import ImgFive from "../Image/Img05.webp";
 export default function Keeper() {
   return (
     <div
-      className="relative h-[550px] w-full object-fill max-w-full bg-fixed"
+      className="relative min-h-screen w-full object-fill max-w-full bg-fixed"
       style={{
-        background: `linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0)), url(${ImgOne.src}) center / cover no-repeat`,
+        background: `linear-gradient(rgba(16, 16, 14, 0.80)), url(${ImgOne.src}) center / cover no-repeat`,
       }}
     >
     </div>
