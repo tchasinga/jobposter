@@ -28,6 +28,16 @@ export default function Jobs() {
 
   return (
     <div className='max-w-screen-2xl mx-auto w-full py-20'>
+
+    <div className="pb-10">
+            <div className='leading-0'>
+            <h1 className='text-4xl font-bold text-white font-mono'>Available job vacancies</h1>
+            <p className='text-lg font-mono py-4'>Apply by submitting your resume and more details about your careers</p>
+
+            </div>
+            <p className="text-white">Number of Jobs: {filteredJobs.length}</p>
+    </div>
+
       {/* Filter buttons */}
       <div className='bg-slate-300 flex gap-4 flex-wrap justify-center items-center py-4 rounded-full'>
         <button 
