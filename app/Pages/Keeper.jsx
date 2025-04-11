@@ -5,6 +5,7 @@ import ImgTwo from "../Image/ImgTwo.jpeg";
 import ImgThree from "../Image/ImgThree.jpeg";
 import ImageFour from "../Image/ImageFour.jpeg";
 import ImgFive from "../Image/Img05.webp";
+import Navbars from './Navbars';
 
 
 
@@ -16,7 +17,7 @@ export default function Keeper() {
         background: `linear-gradient(rgba(16, 16, 14, 0.80)), url(${ImgOne.src}) center / cover no-repeat`,
       }}
     >
-       
+       <Navbars />
     </div>
   );
 }
