@@ -13,3 +13,13 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   grid-gap: 15px;
 }
+
+.nimter:hover{
+  transform: scale(1.05);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.bluvers{
+  backdrop-filter: blur( 5px );
+}
