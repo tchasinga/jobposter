@@ -13,11 +13,16 @@ export default function Home() {
       {/* <Jobs /> */}
       <Jobs />
       {/* <About /> */}
+      <div id="about">
       <AboutSection />
+      </div>
+
       {/* <Testemonial /> */}
       <Testemonial />
       {/* <Contact /> */}
-      <ContactUs />
+      <div id="contact">
+        <ContactUs />
+      </div>
     </div>
   );
 }
