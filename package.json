@@ -21,7 +21,6 @@
     "motion": "^12.6.5",
     "next": "15.3.0",
     "react": "^19.0.0",
-    "react-accessible-accordion": "^3.3.4",
     "react-countup": "^6.5.3",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
