@@ -24,7 +24,7 @@ export default function Navbars() {
             <div className="flex items-center justify-between">
                 <div className="mx-7">
                     <h4 className="text-sm myheader uppercase font-bold text-slate-200">
-                        Jet-codesign
+                        Kuvosh Jobs
                     </h4>
                 </div>
 
