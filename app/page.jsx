@@ -2,6 +2,7 @@ import Image from "next/image";
 import Keeper from "./Pages/Keeper";
 import Jobs from "./Pages/Jobs";
 import AboutSection from "./Pages/AboutSection";
+import Testemonial from "./Pages/Testemonial";
 
 export default function Home() {
   return (
@@ -12,7 +13,9 @@ export default function Home() {
       <Jobs />
       {/* <About /> */}
       <AboutSection />
-      {/* <Companies /> */}
+      {/* <Testemonial /> */}
+      <Testemonial />
+      {/* <Contact /> */}
     </div>
   );
 }
