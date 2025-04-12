@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import getjobs from '../../constant/joblisting';
 import Image from 'next/image';
-
+import Link from 'next/link';
 export default function Jobs() {
   const [filter, setFilter] = useState('all');
   const [selectedJob, setSelectedJob] = useState(null);
@@ -180,12 +180,19 @@ export default function Jobs() {
                 <p className="text-gray-700">{selectedJob.jobresponsibilities}</p>
               </div>
 
-              <button 
-                onClick={closeModal}
-                className="w-full bg-slate-800 text-white py-3 rounded-lg hover:bg-slate-700 transition-colors"
-              >
-                Close
-              </button>
+              <div className="flex gap-4 mt-8">
+                <button 
+                  onClick={closeModal}
+                  className="flex-1 bg-gray-300 text-gray-800 font-medium py-3 px-6 rounded-lg hover:bg-gray-400 transition-colors"
+                >
+                  Close
+                </button>
+                <Link href={'/apply'} 
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+                >
+                  Apply Now
+                </Link>
+              </div>
             </div>
           </div>
         </div>

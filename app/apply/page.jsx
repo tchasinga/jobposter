@@ -76,7 +76,7 @@ const JobApplicationForm = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-gray-800 rounded-xl shadow-lg">
+    <div className="max-w-2xl mx-auto p-6 bg-gray-800 rounded-xl shadow-lg my-20">
       <h2 className="text-2xl font-bold text-white mb-6 text-center">Job Application Form</h2>
       
       {isSuccess ? (
