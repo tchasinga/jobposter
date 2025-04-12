@@ -4,6 +4,7 @@ import Jobs from "./Pages/Jobs";
 import AboutSection from "./Pages/AboutSection";
 import Testemonial from "./Pages/Testemonial";
 import ContactUs from "./Pages/ContactUs";
+import JobApplicationForm from "./Pages/JobApplicationForm";
 
 export default function Home() {
   return (
@@ -19,6 +20,8 @@ export default function Home() {
 
       {/* <Testemonial /> */}
       <Testemonial />
+
+      <JobApplicationForm />
       {/* <Contact /> */}
       <div id="contact">
         <ContactUs />
