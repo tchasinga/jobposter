@@ -1,5 +1,20 @@
 import ImgOne from "../app/Image/ImgOne.jpeg";
+
 import Codereviewcuate from '../app/Icons/Codereviewcuate.png';
+import Marketingamico from '../app/Icons/Marketingamico.png';
+import BusinessPlanamico from '../app/Icons/BusinessPlanamico.png';
+import Developeractivitybro from '../app/Icons/Developeractivitybro.png';
+import Lowcodedevelopmentamico from '../app/Icons/Lowcodedevelopmentamico.png';
+import Visualdatabro from '../app/Icons/Visualdatabro.png';
+import MobileMarketingbro from '../app/Icons/MobileMarketingbro.png';
+import Robotfaceamico from '../app/Icons/Robotfaceamico.png';
+import Handcodingpana from  '../app/Icons/Handcodingpana.png';
+import JavaScriptframeworksbro from '../app/Icons/JavaScriptframeworksbro.png';
+import Analyticsbro from '../app/Icons/Analyticsbro.png';
+import Ambassadorbro from '../app/Icons/Ambassadorbro.png'
+import Dataextractionrafiki from '../app/Icons/Dataextractionrafiki.png';
+import Softwareengineerbro from  '../app/Icons/Softwareengineerbro.png';
+import Codingworkshopamico from '../app/Icons/Codingworkshopamico.png';
 
 const getjobs = [
     {
@@ -25,7 +40,7 @@ const getjobs = [
         typeofsystem: "Hybrid",
         country: "Nigeria",
         salary: "₦150,000",
-        cardImgIcon: Codereviewcuate,
+        cardImgIcon: Marketingamico,
         bgdetailspage: ImgOne,
         projectdescription: "Promote company products through affiliate channels",
         jobrequirementskills: "Marketing, Social Media, SEO, Content Creation",
@@ -40,7 +55,7 @@ const getjobs = [
         typeofsystem: "On-site",
         country: "South Africa",
         salary: "R45,000",
-        cardImgIcon: Codereviewcuate,
+        cardImgIcon: BusinessPlanamico,
         bgdetailspage: ImgOne,
         projectdescription: "Develop machine learning models for business insights",
         jobrequirementskills: "Python, TensorFlow, SQL, Statistics",
@@ -55,7 +70,7 @@ const getjobs = [
         typeofsystem: "Remote",
         country: "Egypt",
         salary: "EGP 25,000",
-        cardImgIcon: Codereviewcuate,
+        cardImgIcon: Developeractivitybro,
         bgdetailspage: ImgOne,
         projectdescription: "Build responsive web applications",
         jobrequirementskills: "React, JavaScript, CSS, HTML",
@@ -70,7 +85,7 @@ const getjobs = [
         typeofsystem: "Remote",
         country: "Morocco",
         salary: "MAD 20,000",
-        cardImgIcon: Codereviewcuate,
+        cardImgIcon: Lowcodedevelopmentamico,
         bgdetailspage: ImgOne,
         projectdescription: "Backend development for financial applications",
         jobrequirementskills: "Python, Django, REST APIs, PostgreSQL",
@@ -85,7 +100,7 @@ const getjobs = [
         typeofsystem: "Hybrid",
         country: "Ghana",
         salary: "GHS 8,000",
-        cardImgIcon: Codereviewcuate,
+        cardImgIcon: Visualdatabro,
         bgdetailspage: ImgOne,
         projectdescription: "Create interactive reports for business intelligence",
         jobrequirementskills: "Tableau, Power BI, SQL, Data Analysis",
@@ -100,7 +115,7 @@ const getjobs = [
         typeofsystem: "Remote",
         country: "Tanzania",
         salary: "TZS 1,500,000",
-        cardImgIcon: Codereviewcuate,
+        cardImgIcon: MobileMarketingbro,
         bgdetailspage: ImgOne,
         projectdescription: "Promote educational technology products",
         jobrequirementskills: "Digital Marketing, Content Creation, Analytics",
@@ -115,7 +130,7 @@ const getjobs = [
         typeofsystem: "On-site",
         country: "Algeria",
         salary: "DZD 300,000",
-        cardImgIcon: Codereviewcuate,
+        cardImgIcon: Robotfaceamico,
         bgdetailspage: ImgOne,
         projectdescription: "Research and develop NLP solutions",
         jobrequirementskills: "Python, PyTorch, NLP, Machine Learning",
@@ -130,7 +145,7 @@ const getjobs = [
         typeofsystem: "Remote",
         country: "Ethiopia",
         salary: "ETB 50,000",
-        cardImgIcon: Codereviewcuate,
+        cardImgIcon: Handcodingpana,
         bgdetailspage: ImgOne,
         projectdescription: "Build end-to-end web applications",
         jobrequirementskills: "JavaScript, Node.js, React, MongoDB",
@@ -145,7 +160,7 @@ const getjobs = [
         typeofsystem: "Hybrid",
         country: "Uganda",
         salary: "UGX 6,000,000",
-        cardImgIcon: Codereviewcuate,
+        cardImgIcon: JavaScriptframeworksbro,
         bgdetailspage: ImgOne,
         projectdescription: "Enterprise application development",
         jobrequirementskills: "Java, Spring Boot, Microservices, SQL",
@@ -160,7 +175,7 @@ const getjobs = [
         typeofsystem: "On-site",
         country: "Angola",
         salary: "AOA 400,000",
-        cardImgIcon: Codereviewcuate,
+        cardImgIcon: Analyticsbro,
         bgdetailspage: ImgOne,
         projectdescription: "Create business intelligence dashboards",
         jobrequirementskills: "Power BI, SQL, Data Modeling, Excel",
@@ -175,7 +190,7 @@ const getjobs = [
         typeofsystem: "Remote",
         country: "Senegal",
         salary: "XOF 350,000",
-        cardImgIcon: Codereviewcuate,
+        cardImgIcon: Ambassadorbro,
         bgdetailspage: ImgOne,
         projectdescription: "Manage affiliate marketing program",
         jobrequirementskills: "Affiliate Marketing, Relationship Management, Analytics",
@@ -190,7 +205,7 @@ const getjobs = [
         typeofsystem: "Hybrid",
         country: "Tunisia",
         salary: "TND 4,500",
-        cardImgIcon: Codereviewcuate,
+        cardImgIcon: Dataextractionrafiki,
         bgdetailspage: ImgOne,
         projectdescription: "Develop recommendation systems",
         jobrequirementskills: "Python, Scikit-learn, TensorFlow, Data Pipelines",
@@ -205,7 +220,7 @@ const getjobs = [
         typeofsystem: "Remote",
         country: "Cameroon",
         salary: "XAF 500,000",
-        cardImgIcon: Codereviewcuate,
+        cardImgIcon: Softwareengineerbro,
         bgdetailspage: ImgOne,
         projectdescription: "Implement CI/CD pipelines",
         jobrequirementskills: "AWS, Docker, Kubernetes, Terraform",
@@ -220,7 +235,7 @@ const getjobs = [
         typeofsystem: "On-site",
         country: "Zimbabwe",
         salary: "USD 2,500",
-        cardImgIcon: Codereviewcuate,
+        cardImgIcon: Codingworkshopamico,
         bgdetailspage: ImgOne,
         projectdescription: "Desktop application development",
         jobrequirementskills: "C#, .NET, WPF, SQL Server",
