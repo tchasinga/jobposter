@@ -40,3 +40,13 @@ body {
     }
   }
 }
+
+
+@media screen and (max-width : 468px) {
+  
+  .newproductgrid{
+    padding-left: 20px;
+    padding-right: 20px;
+  } 
+
+}
