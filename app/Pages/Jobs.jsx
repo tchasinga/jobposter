@@ -1,16 +1,38 @@
 "use client"
-import React, { useState } from 'react';
-import getjobs from '../../constant/joblisting';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+
 export default function Jobs() {
   const [filter, setFilter] = useState('all');
   const [selectedJob, setSelectedJob] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/jobs');
+        if (!response.ok) {
+          throw new Error('Failed to fetch jobs');
+        }
+        const data = await response.json();
+        setJobs(data.jobs);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, []);
 
   const filteredJobs = filter === 'all' 
-    ? getjobs 
-    : getjobs.filter(job => job.typeofcarees === filter);
+    ? jobs 
+    : jobs.filter(job => job.typeofcarees === filter);
 
   const handleFilterClick = (category) => {
     setFilter(category);
@@ -26,17 +48,31 @@ export default function Jobs() {
     setSelectedJob(null);
   };
 
+  if (loading) {
+    return (
+      <div className='max-w-screen-xl mx-auto w-full py-20 text-center'>
+        <p className='text-white'>Loading jobs...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className='max-w-screen-xl mx-auto w-full py-20 text-center'>
+        <p className='text-red-500'>Error: {error}</p>
+      </div>
+    );
+  }
+
   return (
     <div className='max-w-screen-xl mx-auto w-full py-20'>
-
-    <div className="pb-10">
-            <div className='leading-0'>
-            <h1 className='text-4xl font-bold text-white font-mono'>Available job vacancies</h1>
-            <p className='text-lg font-mono py-4'>Apply by submitting your resume and more details about your careers</p>
-
-            </div>
-            <p className="text-white">Number of Jobs: {filteredJobs.length}</p>
-    </div>
+      <div className="pb-10">
+        <div className='leading-0'>
+          <h1 className='text-4xl font-bold text-white font-mono'>Available job vacancies</h1>
+          <p className='text-lg font-mono py-4'>Apply by submitting your resume and more details about your careers</p>
+        </div>
+        <p className="text-white">Number of Jobs: {filteredJobs.length}</p>
+      </div>
 
       {/* Filter buttons */}
       <div className='bg-slate-300 flex gap-4 flex-wrap justify-center items-center py-4 rounded-full'>
@@ -100,7 +136,7 @@ export default function Jobs() {
         {filteredJobs.map((job) => (
           <div 
             className='bg-gray-900 p-4 rounded-xl relative flex flex-col items-center cursor-pointer hover:scale-105 transition-transform' 
-            key={job.id}
+            key={job._id}
             onClick={() => handleJobClick(job)}
           >
             <div className='newproductcardtop'>
@@ -156,11 +192,11 @@ export default function Jobs() {
                   <p className='text-gray-700'>{selectedJob.contractTerm}</p>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-500 text-blue-600">Job Type</h3>
+                  <h3 className="font-semibold text-blue-600">Job Type</h3>
                   <p className='text-gray-700'>{selectedJob.typeofcarees}</p>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-500 text-blue-600">Work System</h3>
+                  <h3 className="font-semibold text-blue-600">Work System</h3>
                   <p className='text-gray-700'>{selectedJob.typeofsystem}</p>
                 </div>
               </div>
@@ -187,8 +223,12 @@ export default function Jobs() {
                 >
                   Close
                 </button>
-                <Link href={'/apply'} 
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+                <Link 
+                  href={{
+                    pathname: '/apply',
+                    query: { jobTitle: selectedJob.title }
+                  }}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors text-center"
                 >
                   Apply Now
                 </Link>
