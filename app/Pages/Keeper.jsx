@@ -26,7 +26,7 @@ export default function Keeper() {
           Get your dream<br/> jobs now
           </h1>
           <p className='text-lg font-mono py-4'>Apply by submitting your resume and more details about your careers</p>
-          <button id='#jobs'  className='bg-[#309EC4] w-1/2 text-white px-6 py-3 rounded-full font-semibold cursor-pointer hover:bg-green-600 duration-500 font-mono'>Start your aplication now</button>
+          
         </motion.div>
       </div>
     </div>
