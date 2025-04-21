@@ -2,9 +2,8 @@
 import React, { useState } from 'react';
 import { motion } from "framer-motion"
 import { containerVariant } from "../../app/components/ui/animation"
-
 import ImgOne from "../Image/ImgOne.jpeg";
-import Navbars from './Navbars';
+
 
 
 export default function Keeper() {
@@ -15,7 +14,7 @@ export default function Keeper() {
         background: `linear-gradient(rgba(16, 16, 14, 0.80)), url(${ImgOne.src}) center / cover no-repeat`,
       }}
     >
-      <Navbars />
+     
 
       <div className='flex flex-col items-center justify-center h-screen max-w-screen-2xl mx-auto'>
         <motion.div className="flex flex-col items-center justify-center text-center"
@@ -27,7 +26,7 @@ export default function Keeper() {
           Get your dream<br/> jobs now
           </h1>
           <p className='text-lg font-mono py-4'>Apply by submitting your resume and more details about your careers</p>
-          <button className='bg-[#309EC4] w-1/2 text-white px-6 py-3 rounded-full font-semibold cursor-pointer hover:bg-green-600 duration-500 font-mono'>Get Started</button>
+          <button id='#jobs'  className='bg-[#309EC4] w-1/2 text-white px-6 py-3 rounded-full font-semibold cursor-pointer hover:bg-green-600 duration-500 font-mono'>Start your aplication now</button>
         </motion.div>
       </div>
     </div>

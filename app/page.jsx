@@ -12,7 +12,7 @@ export default function Home() {
       <Keeper />
       {/* <Extradetails /> */}
       {/* <Jobs /> */}
-      <Jobs />
+      <Jobs id="jobs"/>
       {/* <About /> */}
       <div id="about">
       <AboutSection />

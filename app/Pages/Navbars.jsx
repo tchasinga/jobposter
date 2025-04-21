@@ -8,12 +8,7 @@ export default function Navbars() {
     const menuLinks = [
         {
             name: "Jobs",
-            dropdown: true,
-            links: [
-                { name: "Remote", link: "#team" },
-                { name: "On-site", link: "#vision" },
-                { name: "Hybrid", link: "#careers" },
-            ],
+            link: "#jobs",
         },
         { name: "About-us", link: "#about" },
         { name: "Contact", link: "#contact" },
