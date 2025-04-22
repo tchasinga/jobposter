@@ -33,7 +33,7 @@ const AboutSection = () => {
 
   const stats = [
     { value: "40+", label: "Job Categories", icon: "📊" },
-    { value: "54", label: "African Countries", icon: "🌍" },
+    { value: "100%", label: "Jobs worldwide", icon: "🌍" },
     { value: "10K+", label: "Professionals", icon: "👥" },
     { value: "500+", label: "Partner Companies", icon: "🤝" }
   ];
