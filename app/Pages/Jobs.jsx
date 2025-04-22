@@ -119,7 +119,7 @@ export default function Jobs() {
                 src={job.cardImgIcon} 
                 alt={job.title}
                 fill
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                className="object-contain group-hover:scale-105 transition-transform duration-300"
               />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
                 <h3 className="text-xl font-bold text-white">{job.title}</h3>
@@ -179,7 +179,7 @@ export default function Jobs() {
                 fill
                 className="object-cover rounded-t-xl"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-black/70 to-transparent"></div>
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <h2 className="text-3xl font-bold text-white">{selectedJob.title}</h2>
                 <div className="flex flex-wrap gap-2 mt-2">
