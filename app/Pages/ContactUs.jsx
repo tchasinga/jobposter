@@ -82,7 +82,6 @@ const ContactUs = () => {
                   <li><a href="#" className="hover:text-white transition-colors">Grading & Warranties</a></li>
                   <li><a href="#" className="hover:text-white transition-colors">Privacy policy</a></li>
                   <li><a href="#" className="hover:text-white transition-colors">Terms & Conditions</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Mpesa payment</a></li>
                 </ul>
               </div>
             </div>

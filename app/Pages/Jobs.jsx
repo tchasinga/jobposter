@@ -89,7 +89,7 @@ export default function Jobs() {
           
           <div className="flex flex-wrap gap-2 w-full md:w-auto">
             <select 
-              className="px-4 py-3 rounded-lg bg-white/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-3 rounded-lg bg-slate-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={workLocation}
               onChange={(e) => setWorkLocation(e.target.value)}
             >
