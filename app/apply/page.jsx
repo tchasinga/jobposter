@@ -78,7 +78,7 @@ const JobApplicationForm = () => {
 
     try {
       setIsSubmitting(true);
-      const response = await fetch("http://localhost:3000/api/applicants", {
+      const response = await fetch("https://kuvoshadmin.vercel.app/api/applicants", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
