@@ -14,7 +14,7 @@ const JobApplicationForm = () => {
     salaryExpectation: "",
     experienceLevel: "",
     uploadResume: "",
-    validatedPhonenumber: "",
+    validedPhonenumber: "",
     casinoExperience: false,
     strokeIgaming: false,
     previousCompany: "",
@@ -78,7 +78,7 @@ const JobApplicationForm = () => {
           salaryExpectation: "",
           experienceLevel: "",
           uploadResume: "",
-          validatedPhonenumber: "",
+          validedPhonenumber: "",
           casinoExperience: false,
           strokeIgaming: false,
           previousCompany: "",
@@ -182,8 +182,8 @@ const JobApplicationForm = () => {
           <label className="block font-medium">Validated Phone Number</label>
           <input
             type="text"
-            name="validatedPhonenumber"
-            value={formData.validatedPhonenumber}
+            name="validedPhonenumber"
+            value={formData.validedPhonenumber}
             onChange={handleChange}
             required
             className="w-full p-2 border border-gray-300 rounded"

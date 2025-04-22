@@ -1,9 +1,11 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../globals.css';
+import Link from 'next/link';
 
 export default function Navbars() {
     const [open, setOpen] = useState(false);
+    const [isWhiteBg, setIsWhiteBg] = useState(false);
 
     const menuLinks = [
         {
@@ -14,20 +16,61 @@ export default function Navbars() {
         { name: "Contact", link: "#contact" },
     ];
 
+    useEffect(() => {
+        const handleScroll = () => {
+            // Get the navbar element
+            const navbar = document.querySelector('nav');
+            if (!navbar) return;
+
+            // Get the element directly below the navbar
+            const navbarRect = navbar.getBoundingClientRect();
+            const elementBelow = document.elementFromPoint(
+                window.innerWidth / 2,
+                navbarRect.bottom + 1
+            );
+
+            // Check if the background color is white
+            if (elementBelow) {
+                const bgColor = window.getComputedStyle(elementBelow).backgroundColor;
+                const isWhite = bgColor === 'rgb(255, 255, 255)' || 
+                               bgColor === 'rgba(255, 255, 255, 1)';
+                setIsWhiteBg(isWhite);
+            }
+        };
+
+        // Initial check
+        handleScroll();
+
+        // Add scroll event listener
+        window.addEventListener('scroll', handleScroll);
+
+        // Cleanup
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+    // Dynamic text color classes
+    const textColorClass = isWhiteBg ? 'text-slate-900' : 'text-slate-200';
+    const hoverTextColorClass = isWhiteBg ? 'hover:text-cyan-800' : 'hover:text-cyan-600';
+    const mobileTextColorClass = isWhiteBg ? 'text-slate-900' : 'text-white';
+
     return (
-        <nav className='fixed font-poppins font-sans w-full left-0 top-0 z-[999] bluvers'>
+        <nav className={`fixed font-poppins font-sans w-full left-0 top-0 z-[999] ${isWhiteBg ? 'bg-white shadow-md' : 'bg-transparent'}`}>
             <div className="flex items-center justify-between">
                 <div className="mx-7">
-                    <h4 className="text-sm myheader uppercase font-bold text-slate-200">
+                <Link href="/">
+                    <h4 className={`text-sm uppercase font-bold ${textColorClass}`}>
                         Kuvosh Jobs
                     </h4>
+                </Link>
                 </div>
 
                 {/* Desktop Menu */}
-                <div className='text-gray-900 md:block hidden px-7 py-2 font-medium'>
+                <div className='md:block hidden px-7 py-2 font-medium'>
                     <ul className="flex items-center font-poppins font-sans py-2 text-sm">
                         {menuLinks.map((menu, i) => (
-                            <li key={i} className="relative group px-3 text-white hover:text-cyan-600 cursor-pointer text-xl font-light">
+                            <li key={i} className={`relative group px-3 ${textColorClass} ${hoverTextColorClass} cursor-pointer text-xl font-light`}>
                                 <a href={menu.link || "#"}>{menu.name}</a>
 
                                 {/* Dropdown */}
@@ -48,10 +91,10 @@ export default function Navbars() {
                 {/* Hamburger Icon */}
                 <div
                     onClick={() => setOpen(!open)}
-                    className={`z-[999] ${open ? "text-gray-200" : "text-gray-100"} text-3xl md:hidden m-5`}
+                    className={`z-[999] ${isWhiteBg ? 'text-slate-900' : 'text-slate-200'} text-3xl md:hidden m-5`}
                 >
                     <svg
-                        className="w-8 h-8 text-slate-200"
+                        className="w-8 h-8"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -77,13 +120,15 @@ export default function Navbars() {
 
                 {/* Mobile Menu */}
                 <div
-                    className={`md:hidden text-gray-900 absolute w-full h-screen px-7 py-2 font-medium bg-black top-0 duration-300 ${
+                    className={`md:hidden absolute w-full h-screen px-7 py-2 font-medium ${
+                        isWhiteBg ? 'bg-white' : 'bg-black'
+                    } top-0 duration-300 ${
                         open ? "right-0" : "right-[-100%]"
                     }`}
                 >
-                    <ul className="flex flex-col justify-center h-full text-white gap-10 py-2 text-lg">
+                    <ul className="flex flex-col justify-center h-full gap-10 py-2 text-lg">
                         {menuLinks.map((menu, i) => (
-                            <li key={i} className="px-6 hover:text-cyan-600">
+                            <li key={i} className={`px-6 ${hoverTextColorClass}`}>
                                 <a onClick={() => setOpen(false)} href={menu.link || "#"}>
                                     {menu.name}
                                 </a>
@@ -91,7 +136,7 @@ export default function Navbars() {
                                     <ul className="mt-2 pl-4 text-base space-y-2">
                                         {menu.links.map((item, j) => (
                                             <li key={j}>
-                                                <a onClick={() => setOpen(false)} href={item.link} className="block hover:text-cyan-400">
+                                                <a onClick={() => setOpen(false)} href={item.link} className={`block ${hoverTextColorClass}`}>
                                                     {item.name}
                                                 </a>
                                             </li>
