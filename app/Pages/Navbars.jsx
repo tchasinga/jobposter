@@ -56,7 +56,7 @@ export default function Navbars() {
     const mobileTextColorClass = isWhiteBg ? 'text-slate-900' : 'text-white';
 
     return (
-        <nav className={`fixed font-poppins font-sans w-full left-0 top-0 z-[999] ${isWhiteBg ? 'bg-white shadow-md' : 'bg-transparent'}`}>
+        <nav className={`fixed font-poppins font-sans w-full bg-blacker left-0 top-0 z-[999] ${isWhiteBg ? 'bg-white shadow-md' : 'bg-transparent'}`}>
             <div className="flex items-center justify-between">
                 <div className="mx-7">
                 <Link href="/">

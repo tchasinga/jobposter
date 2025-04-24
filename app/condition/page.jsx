@@ -16,13 +16,10 @@ export default function TermsConditions() {
             <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl">
               Please read these terms carefully before using our job platform. By accessing or using our services, you agree to be bound by these terms.
             </p>
-            <div className="flex flex-wrap gap-4">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition duration-300">
-                Get Started
-              </button>
-              <button className="border border-blue-400 text-blue-400 hover:bg-blue-900/30 px-6 py-3 rounded-lg font-medium transition duration-300">
-                Contact Support
-              </button>
+            <div className="flex flex-col gap-1">
+              <p>the terms of</p>
+              <p>the legal contract between you and your customer for your supply of</p>
+              <p>goods or services, and which regulates your business relationship.</p>
             </div>
           </div>
           
@@ -31,7 +28,7 @@ export default function TermsConditions() {
               <Image 
                 src={nodesimage} 
                 alt="Terms and Conditions" 
-                className="rounded-xl shadow-2xl z-10 relative"
+                className="z-10 relative"
                 width={600}
                 height={400}
               />

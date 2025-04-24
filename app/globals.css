@@ -101,8 +101,7 @@ body {
   backdrop-filter: blur( 5px );
 }
 
-.bg-black{
-  background-color: #000000a1;
+.bg-blacker{
   backdrop-filter: blur( 5px );
 }
 
