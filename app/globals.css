@@ -4,7 +4,44 @@
 body {
   background: #141412;
   color: #FFFFE3;
-  scroll-behavior: smooth; 
+  scroll-behavior: smooth;
+}
+
+/* Floating animations */
+@keyframes float1 {
+  0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
+  50% { transform: translateY(-20px) translateX(10px) rotate(5deg); }
+}
+
+@keyframes float2 {
+  0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
+  50% { transform: translateY(15px) translateX(-15px) rotate(-5deg); }
+}
+
+@keyframes float3 {
+  0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
+  50% { transform: translateY(-15px) translateX(-10px) rotate(3deg); }
+}
+
+@keyframes float4 {
+  0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
+  50% { transform: translateY(10px) translateX(15px) rotate(-3deg); }
+}
+
+.animate-float1 {
+  animation: float1 8s ease-in-out infinite;
+}
+
+.animate-float2 {
+  animation: float2 10s ease-in-out infinite;
+}
+
+.animate-float3 {
+  animation: float3 12s ease-in-out infinite;
+}
+
+.animate-float4 {
+  animation: float4 9s ease-in-out infinite;
 }
 
 /* .newproductgrid {
@@ -48,3 +85,7 @@ body {
   } 
 
 }
+
+
+
+
