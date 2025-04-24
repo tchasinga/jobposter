@@ -20,9 +20,9 @@ export default function Keeper() {
   const [showSocial, setShowSocial] = useState(false);
   const socialLinks = [
     { icon: <FaFacebook size={24} />, url: "https://facebook.com" },
-    { icon: <FaTelegram size={24} />, url: "https://telegram.org" },
+    { icon: <FaTelegram size={24} />, url: "https://web.telegram.org/a/#-1002131799104" },
     { icon: <FaWhatsapp size={24} />, url: "https://whatsapp.com" },
-    { icon: <FaEnvelope size={24} />, url: "mailto:example@example.com" },
+    { icon: <FaEnvelope size={24} />, url: "mailto:collinskuvosh67@gmail.com" },
   ];
 
   return (
