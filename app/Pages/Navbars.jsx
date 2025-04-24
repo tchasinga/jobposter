@@ -14,6 +14,7 @@ export default function Navbars() {
         },
         { name: "About-us", link: "#about" },
         { name: "Contact", link: "#contact" },
+        {name : "Terms & condition", link:"/condition"}
     ];
 
     useEffect(() => {
