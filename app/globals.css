@@ -2,10 +2,9 @@
 @import "tailwindcss";
 
 body {
-  background: #10100E;
+  background: #141412;
   color: #FFFFE3;
-  scroll-behavior: smooth;
-  
+  scroll-behavior: smooth; 
 }
 
 /* .newproductgrid {
