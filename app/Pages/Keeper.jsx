@@ -21,7 +21,7 @@ export default function Keeper() {
   const socialLinks = [
     { icon: <FaFacebook size={24} />, url: "https://facebook.com" },
     { icon: <FaTelegram size={24} />, url: "https://web.telegram.org/a/#-1002131799104" },
-    { icon: <FaWhatsapp size={24} />, url: "https://whatsapp.com" },
+    { icon: <FaWhatsapp size={24} />, url: "https://wa.me/254791484408" },
     { icon: <FaEnvelope size={24} />, url: "mailto:collinskuvosh67@gmail.com" },
   ];
 
