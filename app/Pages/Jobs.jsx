@@ -69,7 +69,7 @@ export default function Jobs() {
 
   return (
     <div className="max-w-screen-xl mx-auto px-4 py-8">
-      {/* Search and Filter Section */}
+      {/* Search and Filter Section nodes*/}
       <div className="mb-8 bg-white/10 backdrop-blur-sm p-6 rounded-xl shadow-lg">
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
           <div className="relative w-full md:w-1/2">
