@@ -79,7 +79,7 @@ export default function Keeper() {
             className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white font-mono mb-6"
             variants={containerVariant(0.2)}
           >
-            Get your dream
+            Get your dreams
             <br /> jobs now
           </motion.h1>
           <motion.p
