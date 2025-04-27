@@ -97,7 +97,7 @@ export default function Jobs() {
   }
 
   return (
-    <div className="max-w-screen-xl mx-auto px-4 py-8">
+    <div className="max-w-screen-2xl min-h-screen  mx-auto px-4 py-20">
       {/* Search and Filter Section */}
       <div className="mb-8 bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-gray-700">
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
@@ -237,17 +237,6 @@ export default function Jobs() {
           </div>
         ))}
       </div>
-
-      {visibleJobs < filteredJobs.length && (
-        <div className="mt-8 text-center">
-          <button
-            onClick={loadMoreJobs}
-            className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white font-medium rounded-lg transition-colors"
-          >
-            Browse More Jobs
-          </button>
-        </div>
-      )}
 
       {filteredJobs.length === 0 && !loading && (
         <div className="text-center py-12">
