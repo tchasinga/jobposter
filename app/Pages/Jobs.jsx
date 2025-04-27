@@ -6,14 +6,12 @@ import Link from 'next/link';
 export default function Jobs() {
   const [searchTerm, setSearchTerm] = useState('');
   const [workLocation, setWorkLocation] = useState('all');
-  const [contractType, setContractType] = useState('all');
+  const [jobType, setJobType] = useState('all');
   const [salaryRange, setSalaryRange] = useState('all');
-  const [sortBy, setSortBy] = useState('newest');
-  const [selectedJob, setSelectedJob] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [visibleJobs, setVisibleJobs] = useState(6);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -35,35 +33,34 @@ export default function Jobs() {
   }, []);
 
   const filteredJobs = jobs.filter(job => {
-    // Search term matching
     const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                         job.typeofcarees.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         job.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         job.jobrequirementskills.toLowerCase().includes(searchTerm.toLowerCase());
+                         job.typeofcarees?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         job.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         job.jobrequirementskills?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         job.country?.toLowerCase().includes(searchTerm.toLowerCase());
     
-    // Work location filter
-    const matchesLocation = workLocation === 'all' || job.typeofsystem.toLowerCase() === workLocation.toLowerCase();
+    const matchesLocation = workLocation === 'all' || 
+                          job.typeofsystem?.toLowerCase() === workLocation.toLowerCase();
     
-    // Contract type filter
-    const matchesContract = contractType === 'all' || job.contractTerm.toLowerCase().includes(contractType.toLowerCase());
+    const matchesJobType = jobType === 'all' || 
+                         job.contractTerm?.toLowerCase() === jobType.toLowerCase();
     
-    // Salary range filter
     let matchesSalary = true;
     if (salaryRange !== 'all') {
-      const salaryNumbers = job.salary.match(/\d+/g);
+      const salaryNumbers = job.salary?.match(/\d+/g);
       if (salaryNumbers && salaryNumbers.length >= 2) {
         const minSalary = parseInt(salaryNumbers[0]);
         const maxSalary = parseInt(salaryNumbers[1]);
         
         switch(salaryRange) {
           case 'low':
-            matchesSalary = maxSalary < 1000;
+            matchesSalary = maxSalary <= 1000;
             break;
           case 'medium':
             matchesSalary = minSalary >= 1000 && maxSalary <= 5000;
             break;
           case 'high':
-            matchesSalary = minSalary > 5000;
+            matchesSalary = minSalary >= 5000;
             break;
           default:
             matchesSalary = true;
@@ -71,37 +68,16 @@ export default function Jobs() {
       }
     }
     
-    return matchesSearch && matchesLocation && matchesContract && matchesSalary;
+    return matchesSearch && matchesLocation && matchesJobType && matchesSalary;
   });
 
-  // Sort jobs
-  const sortedJobs = [...filteredJobs].sort((a, b) => {
-    if (sortBy === 'newest') {
-      return new Date(b.createdAt) - new Date(a.createdAt);
-    } else if (sortBy === 'oldest') {
-      return new Date(a.createdAt) - new Date(b.createdAt);
-    } else if (sortBy === 'salary-high') {
-      const aSalary = parseInt(a.salary.match(/\d+/g)?.[1] || 0);
-      const bSalary = parseInt(b.salary.match(/\d+/g)?.[1] || 0);
-      return bSalary - aSalary;
-    } else if (sortBy === 'salary-low') {
-      const aSalary = parseInt(a.salary.match(/\d+/g)?.[0] || 0);
-      const bSalary = parseInt(b.salary.match(/\d+/g)?.[0] || 0);
-      return aSalary - bSalary;
-    }
-    return 0;
-  });
-
-  const handleJobClick = (job) => {
-    setSelectedJob(job);
-    setIsModalOpen(true);
+  const loadMoreJobs = () => {
+    setVisibleJobs(prev => prev + 6);
   };
 
-  const closeModal = (e) => {
-    if (e.target === e.currentTarget) {
-      setIsModalOpen(false);
-      setSelectedJob(null);
-    }
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
   if (loading) {
@@ -133,7 +109,7 @@ export default function Jobs() {
             </div>
             <input
               type="text"
-              placeholder="Search jobs by title, skills, or keywords..."
+              placeholder="Search jobs by title, skills, country, or keywords..."
               className="pl-10 pr-4 py-3 w-full rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -154,8 +130,8 @@ export default function Jobs() {
 
             <select 
               className="px-4 py-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={contractType}
-              onChange={(e) => setContractType(e.target.value)}
+              value={jobType}
+              onChange={(e) => setJobType(e.target.value)}
             >
               <option value="all">All Types</option>
               <option value="fulltime">Full-time</option>
@@ -169,98 +145,121 @@ export default function Jobs() {
               onChange={(e) => setSalaryRange(e.target.value)}
             >
               <option value="all">All Salaries</option>
-              <option value="low">Under $1,000</option>
+              <option value="low">Up to $1,000</option>
               <option value="medium">$1,000 - $5,000</option>
-              <option value="high">Over $5,000</option>
+              <option value="high">$5,000+</option>
             </select>
           </div>
         </div>
         
-        <div className="mt-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-gray-300">
-            {filteredJobs.length} {filteredJobs.length === 1 ? 'job' : 'jobs'} found
-          </p>
-          
-          <div className="flex items-center gap-2">
-            <span className="text-gray-300">Sort by:</span>
-            <select 
-              className="px-4 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-            >
-              <option value="newest">Newest</option>
-              <option value="oldest">Oldest</option>
-              <option value="salary-high">Salary (High to Low)</option>
-              <option value="salary-low">Salary (Low to High)</option>
-            </select>
-          </div>
+        <div className="mt-4 flex justify-between items-center">
+          <p className="text-gray-300">{filteredJobs.length} {filteredJobs.length === 1 ? 'job' : 'jobs'} found</p>
+          <button 
+            onClick={() => {
+              setSearchTerm('');
+              setWorkLocation('all');
+              setJobType('all');
+              setSalaryRange('all');
+            }}
+            className="text-blue-400 hover:text-blue-300 text-sm"
+          >
+            Clear filters
+          </button>
         </div>
       </div>
 
       {/* Jobs Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {sortedJobs.map((job) => (
-          <div 
-            key={job._id}
-            onClick={() => handleJobClick(job)}
-            className="bg-gray-800/80 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg border border-gray-700 hover:border-blue-500 transition-all duration-300 cursor-pointer hover:shadow-blue-500/20"
-          >
-            <div className="p-6">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
-                  <Image 
-                    src={job.cardImgIcon} 
-                    alt={job.title}
-                    width={48}
-                    height={48}
-                    className="rounded-lg object-cover"
-                  />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-white">{job.title}</h3>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className={`px-2 py-1 text-xs rounded-full ${
-                      job.typeofsystem === 'remote' ? 'bg-green-900 text-green-300' :
-                      job.typeofsystem === 'hybrid' ? 'bg-blue-900 text-blue-300' :
-                      'bg-purple-900 text-purple-300'
-                    }`}>
-                      {job.typeofsystem.charAt(0).toUpperCase() + job.typeofsystem.slice(1)}
-                    </span>
-                    <span className={`px-2 py-1 text-xs rounded-full ${
-                      job.status === 'active' ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300'
-                    }`}>
-                      {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
-                    </span>
+        {filteredJobs.slice(0, visibleJobs).map((job) => (
+          <div key={job._id} className="bg-gray-800/80 rounded-xl overflow-hidden shadow-lg border border-gray-700 hover:border-blue-500 transition-all duration-300">
+            <div className="relative h-[300px] w-full">
+              <Image
+                src={job.cardImgIcon || '/default-job-icon.png'}
+                alt={job.title}
+                fill
+                className="object-fill"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-4">
+                <div className="flex justify-between items-end">
+                  <div>
+                    <div className="flex items-center mt-1">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        job.typeofsystem === 'remote' ? 'bg-green-100 text-green-800' :
+                        job.typeofsystem === 'hybrid' ? 'bg-blue-100 text-blue-800' :
+                        'bg-purple-100 text-purple-800'
+                      }`}>
+                        {job.typeofsystem?.charAt(0).toUpperCase() + job.typeofsystem?.slice(1)}
+                      </span>
+                    </div>
                   </div>
+                  <span className={`px-2 py-1 rounded text-xs font-medium ${
+                    job.status === 'active' ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
+                  }`}>
+                    {job.status}
+                  </span>
                 </div>
               </div>
+            </div>
+            
+            <div className="p-5">
+              <h3 className="text-white font-semibold text-xl">{job.title}</h3>
               
-              <div className="mt-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-300 text-sm">Posted: {new Date(job.createdAt).toLocaleDateString()}</span>
-                  <span className="text-blue-400 font-medium">{job.salary}</span>
+              {/* Added country display here */}
+              {job.country && (
+                <div className="flex items-center mt-1 mb-2 text-gray-300">
+                  <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span className="text-sm">{job.country}</span>
                 </div>
+              )}
+              
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center space-x-2">
+                  <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                  <span className="text-gray-300">{job.salary || 'Salary not specified'}</span>
+                </div>
+                <span className="text-xs text-gray-400">{formatDate(job.createdAt)}</span>
+              </div>
+              
+              <div className="mt-4 flex justify-end items-end">
+                <Link href={`/jobs/${job._id}`} className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors">
+                  Submit cv
+                  <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                  </svg>
+                </Link>
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* No Jobs Found */}
-      {sortedJobs.length === 0 && !loading && (
+      {visibleJobs < filteredJobs.length && (
+        <div className="mt-8 text-center">
+          <button
+            onClick={loadMoreJobs}
+            className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white font-medium rounded-lg transition-colors"
+          >
+            Browse More Jobs
+          </button>
+        </div>
+      )}
+
+      {filteredJobs.length === 0 && !loading && (
         <div className="text-center py-12">
-          <div className="mx-auto w-24 h-24 text-gray-500 mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <div className="mx-auto w-24 h-24 mb-4 text-gray-500">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
           </div>
           <h3 className="text-xl font-medium text-gray-300">No jobs found</h3>
           <p className="text-gray-500 mt-2">Try adjusting your search or filter criteria</p>
         </div>
       )}
-
-      {/* Job Details Modal */}
-      
     </div>
   );
 }
