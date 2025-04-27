@@ -6,6 +6,9 @@ import Link from 'next/link';
 export default function Jobs() {
   const [searchTerm, setSearchTerm] = useState('');
   const [workLocation, setWorkLocation] = useState('all');
+  const [contractType, setContractType] = useState('all');
+  const [salaryRange, setSalaryRange] = useState('all');
+  const [sortBy, setSortBy] = useState('newest');
   const [selectedJob, setSelectedJob] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [jobs, setJobs] = useState([]);
@@ -15,7 +18,7 @@ export default function Jobs() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/jobs');
+        const response = await fetch('http://localhost:3000/api/jobs');
         if (!response.ok) {
           throw new Error('Failed to fetch jobs');
         }
@@ -32,11 +35,61 @@ export default function Jobs() {
   }, []);
 
   const filteredJobs = jobs.filter(job => {
+    // Search term matching
     const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                          job.typeofcarees.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         job.description.toLowerCase().includes(searchTerm.toLowerCase());
+                         job.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         job.jobrequirementskills.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    // Work location filter
     const matchesLocation = workLocation === 'all' || job.typeofsystem.toLowerCase() === workLocation.toLowerCase();
-    return matchesSearch && matchesLocation;
+    
+    // Contract type filter
+    const matchesContract = contractType === 'all' || job.contractTerm.toLowerCase().includes(contractType.toLowerCase());
+    
+    // Salary range filter
+    let matchesSalary = true;
+    if (salaryRange !== 'all') {
+      const salaryNumbers = job.salary.match(/\d+/g);
+      if (salaryNumbers && salaryNumbers.length >= 2) {
+        const minSalary = parseInt(salaryNumbers[0]);
+        const maxSalary = parseInt(salaryNumbers[1]);
+        
+        switch(salaryRange) {
+          case 'low':
+            matchesSalary = maxSalary < 1000;
+            break;
+          case 'medium':
+            matchesSalary = minSalary >= 1000 && maxSalary <= 5000;
+            break;
+          case 'high':
+            matchesSalary = minSalary > 5000;
+            break;
+          default:
+            matchesSalary = true;
+        }
+      }
+    }
+    
+    return matchesSearch && matchesLocation && matchesContract && matchesSalary;
+  });
+
+  // Sort jobs
+  const sortedJobs = [...filteredJobs].sort((a, b) => {
+    if (sortBy === 'newest') {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    } else if (sortBy === 'oldest') {
+      return new Date(a.createdAt) - new Date(b.createdAt);
+    } else if (sortBy === 'salary-high') {
+      const aSalary = parseInt(a.salary.match(/\d+/g)?.[1] || 0);
+      const bSalary = parseInt(b.salary.match(/\d+/g)?.[1] || 0);
+      return bSalary - aSalary;
+    } else if (sortBy === 'salary-low') {
+      const aSalary = parseInt(a.salary.match(/\d+/g)?.[0] || 0);
+      const bSalary = parseInt(b.salary.match(/\d+/g)?.[0] || 0);
+      return aSalary - bSalary;
+    }
+    return 0;
   });
 
   const handleJobClick = (job) => {
@@ -69,8 +122,8 @@ export default function Jobs() {
 
   return (
     <div className="max-w-screen-xl mx-auto px-4 py-8">
-      {/* Search and Filter Section nodes*/}
-      <div className="mb-8 bg-white/10 backdrop-blur-sm p-6 rounded-xl shadow-lg">
+      {/* Search and Filter Section */}
+      <div className="mb-8 bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-gray-700">
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
           <div className="relative w-full md:w-1/2">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -81,7 +134,7 @@ export default function Jobs() {
             <input
               type="text"
               placeholder="Search jobs by title, skills, or keywords..."
-              className="pl-10 pr-4 py-3 w-full rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="pl-10 pr-4 py-3 w-full rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -89,7 +142,7 @@ export default function Jobs() {
           
           <div className="flex flex-wrap gap-2 w-full md:w-auto">
             <select 
-              className="px-4 py-3 rounded-lg bg-slate-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={workLocation}
               onChange={(e) => setWorkLocation(e.target.value)}
             >
@@ -98,176 +151,116 @@ export default function Jobs() {
               <option value="onsite">Onsite</option>
               <option value="hybrid">Hybrid</option>
             </select>
+
+            <select 
+              className="px-4 py-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={contractType}
+              onChange={(e) => setContractType(e.target.value)}
+            >
+              <option value="all">All Types</option>
+              <option value="fulltime">Full-time</option>
+              <option value="parttime">Part-time</option>
+              <option value="contract">Contract</option>
+            </select>
+
+            <select 
+              className="px-4 py-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={salaryRange}
+              onChange={(e) => setSalaryRange(e.target.value)}
+            >
+              <option value="all">All Salaries</option>
+              <option value="low">Under $1,000</option>
+              <option value="medium">$1,000 - $5,000</option>
+              <option value="high">Over $5,000</option>
+            </select>
           </div>
         </div>
         
-        <div className="mt-4 flex justify-between items-center">
-          <p className="text-gray-300">{filteredJobs.length} {filteredJobs.length === 1 ? 'job' : 'jobs'} found</p>
+        <div className="mt-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-gray-300">
+            {filteredJobs.length} {filteredJobs.length === 1 ? 'job' : 'jobs'} found
+          </p>
+          
+          <div className="flex items-center gap-2">
+            <span className="text-gray-300">Sort by:</span>
+            <select 
+              className="px-4 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+              <option value="salary-high">Salary (High to Low)</option>
+              <option value="salary-low">Salary (Low to High)</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      {/* Job Grid */}
+      {/* Jobs Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredJobs.map((job) => (
+        {sortedJobs.map((job) => (
           <div 
-            className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer group"
             key={job._id}
             onClick={() => handleJobClick(job)}
+            className="bg-gray-800/80 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg border border-gray-700 hover:border-blue-500 transition-all duration-300 cursor-pointer hover:shadow-blue-500/20"
           >
-            <div className="relative h-48 overflow-hidden">
-              <Image 
-                src={job.cardImgIcon} 
-                alt={job.title}
-                fill
-                className="object-contain group-hover:scale-105 transition-transform duration-300"
-              />
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                <h3 className="text-xl font-bold text-white">{job.title}</h3>
-                <p className="text-gray-300 text-sm">{job.country} • {job.typeofworks}</p>
-              </div>
-              <span className="absolute top-4 right-4 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">
-                {job.typeofsystem}
-              </span>
-            </div>
-            
             <div className="p-6">
-              <div className="flex justify-between items-center mb-3">
-                <span className="text-blue-400 font-medium">{job.typeofcarees}</span>
-                <span className="text-yellow-400 font-bold">{job.salary}</span>
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0">
+                  <Image 
+                    src={job.cardImgIcon} 
+                    alt={job.title}
+                    width={48}
+                    height={48}
+                    className="rounded-lg object-cover"
+                  />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold text-white">{job.title}</h3>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className={`px-2 py-1 text-xs rounded-full ${
+                      job.typeofsystem === 'remote' ? 'bg-green-900 text-green-300' :
+                      job.typeofsystem === 'hybrid' ? 'bg-blue-900 text-blue-300' :
+                      'bg-purple-900 text-purple-300'
+                    }`}>
+                      {job.typeofsystem.charAt(0).toUpperCase() + job.typeofsystem.slice(1)}
+                    </span>
+                    <span className={`px-2 py-1 text-xs rounded-full ${
+                      job.status === 'active' ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300'
+                    }`}>
+                      {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
+                    </span>
+                  </div>
+                </div>
               </div>
               
-              <p className="text-gray-300 line-clamp-2 mb-4">{job.description}</p>
-              
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-400">{new Date(job.createdAt).toLocaleDateString()}</span>
-                <button className="text-blue-400 hover:text-blue-300 font-medium text-sm">
-                  View Details →
-                </button>
+              <div className="mt-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-300 text-sm">Posted: {new Date(job.createdAt).toLocaleDateString()}</span>
+                  <span className="text-blue-400 font-medium">{job.salary}</span>
+                </div>
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Empty State */}
-      {filteredJobs.length === 0 && (
-        <div className="text-center py-16">
-          <div className="mx-auto w-24 h-24 mb-4 text-gray-400">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      {/* No Jobs Found */}
+      {sortedJobs.length === 0 && !loading && (
+        <div className="text-center py-12">
+          <div className="mx-auto w-24 h-24 text-gray-500 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h3 className="text-xl font-medium text-gray-300 mb-2">No jobs found</h3>
-          <p className="text-gray-500">Try adjusting your search or filter criteria</p>
+          <h3 className="text-xl font-medium text-gray-300">No jobs found</h3>
+          <p className="text-gray-500 mt-2">Try adjusting your search or filter criteria</p>
         </div>
       )}
 
       {/* Job Details Modal */}
-      {isModalOpen && selectedJob && (
-        <div 
-          className="fixed inset-0 bg-black flex items-center justify-center p-4 z-[9999]"
-          onClick={closeModal}
-        >
-          <div 
-            className="bg-gray-900 rounded-xl shadow-2xl max-w-7xl w-full max-h-[90vh] border border-gray-700 overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="relative h-64 w-full">
-              <Image 
-                src={selectedJob.bgdetailspage} 
-                alt="Job background" 
-                fill
-                className="object-cover rounded-t-xl"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-black/70 to-transparent"></div>
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <h2 className="text-3xl font-bold text-white">{selectedJob.title}</h2>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  <span className="bg-blue-600/30 text-blue-300 px-3 py-1 rounded-full text-sm">
-                    {selectedJob.country}
-                  </span>
-                  <span className="bg-purple-600/30 text-purple-300 px-3 py-1 rounded-full text-sm">
-                    {selectedJob.typeofworks}
-                  </span>
-                  <span className="bg-green-600/30 text-green-300 px-3 py-1 rounded-full text-sm">
-                    {selectedJob.typeofsystem}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div className="bg-gray-800/50 p-4 rounded-lg">
-                  <h3 className="text-lg font-semibold text-blue-400 mb-2">Salary</h3>
-                  <p className="text-white">{selectedJob.salary}</p>
-                </div>
-                <div className="bg-gray-800/50 p-4 rounded-lg">
-                  <h3 className="text-lg font-semibold text-blue-400 mb-2">Contract Term</h3>
-                  <p className="text-white">{selectedJob.contractTerm}</p>
-                </div>
-                <div className="bg-gray-800/50 p-4 rounded-lg">
-                  <h3 className="text-lg font-semibold text-blue-400 mb-2">Job Type</h3>
-                  <p className="text-white">{selectedJob.typeofcarees}</p>
-                </div>
-                <div className="bg-gray-800/50 p-4 rounded-lg">
-                  <h3 className="text-lg font-semibold text-blue-400 mb-2">Casino experience</h3>
-                  <p className="text-white">{selectedJob.questionone}</p>
-                </div>
-                <div className="bg-gray-800/50 p-4 rounded-lg">
-                  <h3 className="text-lg font-semibold text-blue-400 mb-2">IGaming experience</h3>
-                  <p className="text-white">{selectedJob.questiontwo}</p>
-                </div>
-                <div className="bg-gray-800/50 p-4 rounded-lg">
-                  <h3 className="text-lg font-semibold text-blue-400 mb-2">Posted</h3>
-                  <p className="text-white">
-                    {new Date(selectedJob.createdAt).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-xl font-semibold text-white mb-3 border-b border-gray-700 pb-2">Project Description</h3>
-                  <p className="text-gray-300 whitespace-pre-line">{selectedJob.projectdescription}</p>
-                </div>
-
-                <div>
-                  <h3 className="text-xl font-semibold text-white mb-3 border-b border-gray-700 pb-2">Requirements</h3>
-                  <p className="text-gray-300 whitespace-pre-line">{selectedJob.jobrequirementskills}</p>
-                </div>
-
-                <div>
-                  <h3 className="text-xl font-semibold text-white mb-3 border-b border-gray-700 pb-2">Responsibilities</h3>
-                  <p className="text-gray-300 whitespace-pre-line">{selectedJob.jobresponsibilities}</p>
-                </div>
-              </div>
-
-              <div className="mt-8 flex flex-col sm:flex-row gap-4">
-                <button
-                  onClick={closeModal}
-                  className="flex-1 py-3 px-6 rounded-lg bg-gray-700 hover:bg-gray-600 text-white font-medium transition-colors"
-                >
-                  Close
-                </button>
-                <Link
-                  href={{
-                    pathname: '/apply',
-                    query: { jobTitle: selectedJob.title }
-                  }}
-                  className="flex-1 py-3 px-6 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-medium text-center transition-colors"
-                >
-                  Apply Now
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      
     </div>
   );
 }
