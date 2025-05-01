@@ -16,7 +16,7 @@ export default function JobDetails() {
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/jobs/${id}`, {
+        const response = await fetch(`https://kuvoshadmin.vercel.app/api/jobs/${id}`, {
           method: 'GET',
         });
   
