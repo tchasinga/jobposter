@@ -4,7 +4,7 @@ import Jobs from "./Pages/Jobs";
 import AboutSection from "./Pages/AboutSection";
 import Testemonial from "./Pages/Testemonial";
 import ContactUs from "./Pages/ContactUs";
-import JobApplicationForm from "./apply/page";
+import JobApplicationForm from "./apply/JobApplicationForm";
 
 export default function Home() {
   return (

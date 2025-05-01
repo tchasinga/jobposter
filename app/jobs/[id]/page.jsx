@@ -1,21 +1,23 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import JobApplicationForm from '../../apply/JobApplicationForm';
 
 export default function JobDetails() {
   const { id } = useParams();
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isApplying, setIsApplying] = useState(false);
+  const [showApplicationForm, setShowApplicationForm] = useState(false);
+  const formRef = useRef(null);
 
   useEffect(() => {
     const fetchJob = async () => {
       try {
         const response = await fetch(`http://localhost:3000/api/jobs/${id}`, {
-          method: 'GET', // Corrected spelling and placement
+          method: 'GET',
         });
   
         if (!response.ok) {
@@ -33,21 +35,18 @@ export default function JobDetails() {
   
     fetchJob();
   }, [id]);
-  
+
+  const handleApply = () => {
+    setShowApplicationForm(true);
+    // Scroll to the form after a small delay to allow state update
+    setTimeout(() => {
+      formRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
 
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
-  };
-
-  const handleApply = () => {
-    setIsApplying(true);
-    // Here you would typically handle the application logic
-    // For now, we'll just simulate a submission
-    setTimeout(() => {
-      setIsApplying(false);
-      alert('Application submitted successfully!');
-    }, 1500);
   };
 
   if (loading) {
@@ -92,7 +91,6 @@ export default function JobDetails() {
               fill
               className="object-cover w-full h-full"
             />
-           
           </div>
         )}
         
@@ -143,25 +141,12 @@ export default function JobDetails() {
             
             <button
               onClick={handleApply}
-              disabled={isApplying}
               className="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-medium rounded-lg shadow-lg transition-all duration-300 flex items-center"
             >
-              {isApplying ? (
-                <>
-                  <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Applying...
-                </>
-              ) : (
-                <>
-                  Apply Now
-                  <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                  </svg>
-                </>
-              )}
+              Apply Now
+              <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+              </svg>
             </button>
           </div>
         </div>
@@ -295,25 +280,12 @@ export default function JobDetails() {
           <div className="lg:hidden bg-gray-800/80 rounded-xl p-6 border border-gray-700 mb-8">
             <button
               onClick={handleApply}
-              disabled={isApplying}
               className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-medium rounded-lg shadow-lg transition-all duration-300 flex items-center justify-center"
             >
-              {isApplying ? (
-                <>
-                  <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Applying...
-                </>
-              ) : (
-                <>
-                  Apply Now
-                  <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                  </svg>
-                </>
-              )}
+              Apply Now
+              <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+              </svg>
             </button>
           </div>
           
@@ -345,6 +317,14 @@ export default function JobDetails() {
           </div>
         </div>
       </div>
+
+      {/* Application Form Section */}
+      {showApplicationForm && (
+        <div ref={formRef} className="mt-12 bg-gray-800/80 rounded-xl p-6 border border-gray-700">
+          <h2 className="text-2xl font-bold text-white mb-6">Apply for {job.title}</h2>
+          <JobApplicationForm jobId={id} />
+        </div>
+      )}
     </div>
   );
 }

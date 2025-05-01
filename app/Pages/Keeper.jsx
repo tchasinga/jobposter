@@ -107,9 +107,7 @@ export default function Keeper() {
                 Browse Jobs
               </button>
             </div>
-            <button className="px-8 py-3 border-2 border-white text-white font-mono rounded-lg hover:bg-white/10 transition-all duration-300 hover:scale-105">
-              Post Resume
-            </button>
+            
           </motion.div>
         </motion.div>
 
