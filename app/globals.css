@@ -105,6 +105,10 @@ body {
   backdrop-filter: blur( 5px );
 }
 
+.addblur{
+  backdrop-filter: blur( 1px );
+}
+
 
 @theme inline {
   --animate-scroll: scroll var(--animation-duration, 90s) var(--animation-direction, forwards) linear infinite;
